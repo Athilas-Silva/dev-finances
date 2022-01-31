@@ -187,6 +187,10 @@ table tbody td{
     padding: 1rem 2rem;
 }
 
+td img{
+    cursor: pointer;
+}
+
 td.description{
     color: var(--dark-blue);
 }
@@ -197,6 +201,11 @@ td.income{
 
 td.expense{
     color: #e92929;
+}
+
+td img#edit{
+    height: 1.6rem;
+    cursor: pointer;
 }
 
 /* Modal ==================================> */
