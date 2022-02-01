@@ -2,7 +2,7 @@
 
 ![home](https://user-images.githubusercontent.com/71888055/151723416-1aec8a71-6810-496d-b42a-bd4f64aaba21.PNG)
 
-Aplicação é um [CRUD](https://angelopublio.com.br/blog/crud) onde podemos, adicionar, editar e excluir contas financeiras como por exemplo, água, luz, gás, aluguel, venda de produtos, etc. Está aplicação irá ajudar o usuário a controlar os gastos do mês, mostrando as despesas, os lucros e o saldo do usuário. O site irá armazenar as informações cadastradas no [LocalStorage](https://developer.mozilla.org/pt-BR/docs/Web/API/Window/localStorage) para manter as informações salvas no navegador e não ter que precisar cadastrar tudo de novo cada vez que abrir a aplicação.
+Esta aplicação consiste em ser uma forma alternativa do usuário marcar suas despesas e lucros que obteve durante o mês, podendo adicionar e excluir suas contas pessoais e calcular suas finanças. Mostrando as despesas, os lucros e o saldo do usuário, o site irá armazenar as informações cadastradas no [LocalStorage](https://developer.mozilla.org/pt-BR/docs/Web/API/Window/localStorage) para manter as informações salvas no navegador e não ter que precisar cadastrar tudo de novamente ha cada vez que abrir a aplicação.
 
 ##
 
