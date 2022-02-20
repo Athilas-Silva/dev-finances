@@ -54,6 +54,7 @@
                         <th>Valor</th>
                         <th>Data</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
     
@@ -89,6 +90,37 @@
                     <div class="input-group actions">
                         <a href="#" class="button cancel" onclick="Modal.close()">Cancelar</a>
                         <button>Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalEdit" class="modal-overlay">
+        <div class="modal">
+            <div id="form">
+                <h2>Editar Transação</h2>
+
+                <form action="" method="get" onsubmit="Form.submitEdit(event)">
+                    <div class="input-group">
+                        <label class="sr-only" for="description">Descrição</label>
+                        <input type="text" id="descriptionEdit" name="descriptionEdit" placeholder="Descrição">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="sr-only" for="amount">Valor</label>
+                        <input type="text" step="0.01" id="amountEdit" name="amountEdit" placeholder="0,00">
+                        <small class="help">Use o sinal -(negativo) para despesas e , (virgula) para casas decimais</small>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="sr-only" for="date">Data</label>
+                        <input type="date" id="dateEdit" name="dateEdit">
+                    </div>
+
+                    <div class="input-group actions">
+                        <a href="#" class="button cancel" onclick="ModalEdit.close()">Cancelar</a>
+                        <button type="submit">Salvar</button>
                     </div>
                 </form>
             </div>

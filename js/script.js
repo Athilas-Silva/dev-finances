@@ -1,3 +1,8 @@
+let descriptionEdit = document.getElementById("descriptionEdit");
+let amountEdit = document.getElementById("amountEdit");
+let dateEdit = document.getElementById("dateEdit");
+let indexArray = 0;
+
 const Modal = {
     open(){
         //Abrir o modal e adicionar a class active do modal
@@ -6,6 +11,15 @@ const Modal = {
     close(){
         //Fechar o modal e remover a class active do modal
         document.querySelector(".modal-overlay").classList.remove("active");
+    }
+}
+
+const ModalEdit = {
+    open(){
+        document.querySelector("#modalEdit").classList.add("active");
+    },
+    close(){
+        document.querySelector("#modalEdit").classList.remove("active");
     }
 }
 
@@ -21,16 +35,37 @@ const SaveStorage = {
 
 const Transaction = {
     all: SaveStorage.get(),
-
     add(transaction){
         Transaction.all.push(transaction);
-
         App.reload();
+    },
+
+    addEdit(transaction){
+        const editTransaction = transaction;
+        const newEdit = Transaction.all.map((transaction, index) => {
+            if(indexArray === index){
+                transaction.description = editTransaction.description;
+                transaction.amount = editTransaction.amount;
+                transaction.date = editTransaction.date
+            }
+
+            return transaction;
+        });
+        Transaction.all = newEdit;
+        App.reload();
+    },
+
+    edit(index){
+        const splitdate = Transaction.all[index].date.split("/");
+        indexArray = index;
+        ModalEdit.open();
+        descriptionEdit.value = Transaction.all[index].description;
+        amountEdit.value = Transaction.all[index].amount;
+        dateEdit.value = `${splitdate[2]}-${splitdate[1]}-${splitdate[0]}`;
     },
 
     remove(index){
         Transaction.all.splice(index, 1)
-
         App.reload()
     },
 
@@ -38,24 +73,26 @@ const Transaction = {
         // Pegar todas as transações
         let income = 0;
         //Para cada transação, se ela for maior que 0, somar em uma variavel e retornar
-        Transaction.all.forEach((transaction) => { 
+        Transaction.all.forEach(transaction => { 
             if(transaction.amount > 0){
                 income += transaction.amount;
             }
-        })
+        });
         return income;
     },
+
     expense(){
         // Pegar todas as transações
         let expense = 0;
         //Para cada transação, se ela for menor que 0, somar em uma variavel e retornar
-        Transaction.all.forEach((transaction) => { 
+        Transaction.all.forEach(transaction => { 
             if(transaction.amount < 0){
                 expense += transaction.amount;
             }
-        })
+        });
         return expense;
     },
+
     total(){
         return Transaction.incomes() + Transaction.expense();
     }
@@ -74,13 +111,14 @@ const DOM = {
 
     innerHTMLTransaction(transaction, index){
         const CSSclass = transaction.amount > 0 ? "income" : "expense";
-
         const amount = Utils.formatCurrency(transaction.amount);
-        
         const html = `
             <td class="description">${transaction.description}</td>
             <td class="${CSSclass}">${amount}</td>
             <td class="date">${transaction.date}</td>
+            <td>
+                <img class="edit" src="img/edit.svg" alt="Editar Transação" onclick="Transaction.edit(${index})">
+            </td>
             <td>
                 <img onclick="Transaction.remove(${index})" src="./img/minus.svg" alt="Remover Transação">
             </td>
@@ -102,30 +140,28 @@ const DOM = {
 }
 
 const Utils = {
-    formatAmount(value){
-        value = value * 100;
+    formatCurrency(value){
+        const signal = Number(value) < 0 ? "-" : "";
+        value = String(value).replace(/\D/g, "");
+        value = Number(value) / 100;
+        value = value.toLocaleString("pt-br", {
+            style: "currency",
+            currency: "BRL"
+        });
+        
+        return signal + value;
+    },
 
+    formatAmount(value){
+        const signal = Number(value) < 0 ? "-": "";
+        value = String(value).replace(/\D/g, "");
+        value = Number(signal + value);
         return Math.round(value);
     },
 
     formatDate(date){
         const splittedDate = date.split("-");
         return `${splittedDate[2]}/${splittedDate[1]}/${splittedDate[0]}`
-    },
-
-    formatCurrency(value){
-        const signal = Number(value) < 0 ? "-" : "";
-
-        value = String(value).replace(/\D/g, "");
-
-        value = Number(value) / 100;
-
-        value = value.toLocaleString("pt-br", {
-            style: "currency",
-            currency: "BRL"
-        })
-
-        return signal + value;
     }
 }
 
@@ -135,39 +171,19 @@ const Form = {
     date: document.querySelector("input#date"),
 
     getValues(){
-        return{
-            description: Form.description.value,
-            amount: Form.amount.value,
-            date: Form.date.value
+        return{ //Tirei o FORM
+            description: description.value,
+            amount: amount.value,
+            date: date.value
         }
     },
 
-    validateFields(){
-        const { description, amount, date } = Form.getValues();
-
-        if(description.trim() === "" || amount.trim() === "" || date.trim() === ""){
-            throw new Error("Por favor, preencha todos os campos");
-        }
-    },
-
-    formatValues(){
-        let { description, amount, date } = Form.getValues();
-
-        amount = Utils.formatAmount(amount);
-
-        date = Utils.formatDate(date);
-
+    getValuesEdit(){
         return {
-            description,
-            amount,
-            date
-        }
-    },
-
-    clearFields(){
-        Form.description.value = "";
-        Form.amount.value = "";
-        Form.date.value = "";
+            description: descriptionEdit.value,
+            amount: amountEdit.value,
+            date: dateEdit.value,
+        };
     },
 
     submit(event){
@@ -192,6 +208,50 @@ const Form = {
         } catch (error) {
             alert(error.message)
         }
+    },
+
+    submitEdit(event){
+        event.preventDefault();
+        const transaction = Form.getValuesEdit();
+        Transaction.addEdit(transaction);
+        ModalEdit.close();
+    },
+
+    validateFields(){
+        const { description, amount, date } = Form.getValues();
+
+        if(description.trim() === "" || amount.trim() === "" || date.trim() === ""){
+            throw new Error("Por favor, preencha todos os campos");
+        }
+    },
+
+    formatValues(){
+        let { description, amount, date } = Form.getValues();
+        amount = Utils.formatAmount(amount);
+        date = Utils.formatDate(date);
+
+        return {
+            description,
+            amount,
+            date
+        }
+    },
+
+    formatValuesEdit(){
+        let { description, amount, date } = Form.getValuesEdit();
+        amount = Utils.formatAmount(amount);
+        date = Utils.formatDate(date);
+        return{
+            description,
+            amount,
+            date
+        };
+    },
+
+    clearFields(){
+        Form.description.value = "";
+        Form.amount.value = "";
+        Form.date.value = "";
     }
 }
 
