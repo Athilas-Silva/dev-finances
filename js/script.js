@@ -171,7 +171,7 @@ const Form = {
     date: document.querySelector("input#date"),
 
     getValues(){
-        return{ //Tirei o FORM
+        return{
             description: description.value,
             amount: amount.value,
             date: date.value
@@ -212,7 +212,7 @@ const Form = {
 
     submitEdit(event){
         event.preventDefault();
-        const transaction = Form.getValuesEdit();
+        const transaction = Form.formatValuesEdit();
         Transaction.addEdit(transaction);
         ModalEdit.close();
     },
