@@ -2,7 +2,19 @@
 
 ![home](https://user-images.githubusercontent.com/71888055/151723416-1aec8a71-6810-496d-b42a-bd4f64aaba21.PNG)
 
-Esta aplicação consiste em ser uma forma alternativa do usuário marcar suas despesas e lucros que obteve durante o mês, podendo adicionar e excluir suas contas pessoais e calcular suas finanças. Mostrando as despesas, os lucros e o saldo do usuário, o site irá armazenar as informações cadastradas no [LocalStorage](https://developer.mozilla.org/pt-BR/docs/Web/API/Window/localStorage) para manter as informações salvas no navegador e não ter que precisar cadastrar tudo de novamente ha cada vez que abrir a aplicação.
+Esta aplicação consiste em ser uma forma alternativa do usuário marcar suas despesas e lucros que obteve durante o mês, podendo adicionar, removere editar suas contas pessoais e calcular suas finanças. Mostrando as despesas, os lucros e o saldo do usuário, o site irá armazenar as informações cadastradas no [LocalStorage](https://developer.mozilla.org/pt-BR/docs/Web/API/Window/localStorage) para manter as informações salvas no navegador e não ter que precisar cadastrar tudo novamente cada vez que abrir a aplicação. Seguindo o sistema de um *CRUD*.
+
+## O que é um CRUD?
+
+CRUD é a composição da primeira letra de 4 funções básicas de um sistema que trabalha com banco de dados:
+
+✅ C: Create (criar) - criar um novo registro
+
+👁 R: Read (ler) - ler (exibir) as informações de um registro
+
+♻️ U: Update (atualizar) - atualizar os dados do registro
+
+❌ D: Delete (apagar) - apagar um registro
 
 ##
 
